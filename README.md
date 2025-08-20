@@ -2,7 +2,7 @@
 
 This is a modern, responsive weather frontend built for web surfers who want quick and accurate weather forecasts in Germany.  
 Users can enter any location within Germany and view **daily-accurate weather data**, including a clean preview interface.  
-We use the **free [Open-Meteo API](https://open-meteo.com/)** to fetch up-to-date weather data.
+I use the **free [Open-Meteo API](https://open-meteo.com/)** to fetch up-to-date weather data.
 
 ## ✨ Tech Stack
 

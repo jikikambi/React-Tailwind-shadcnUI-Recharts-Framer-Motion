@@ -1,4 +1,3 @@
-````markdown
 # 🌤️ Modern Weather Frontend for Web Surfers
 
 This is a modern, responsive weather frontend built for web surfers who want quick and accurate weather forecasts in Germany.  

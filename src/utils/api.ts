@@ -1,26 +1,6 @@
+import { config } from "../config";
 import { DailyForecastResponse } from "../models/DailyForecastResponse";
 import { GeoResult } from "../models/GeoResult";
-
-
-const GEOCODE_API =
-  import.meta.env.VITE_GEOCODE_API ||
-  import.meta.env.NEXT_PUBLIC_GEOCODE_API ||
-  "https://geocoding-api.open-meteo.com/v1/search";
-
-const FORECAST_API =
-  import.meta.env.VITE_FORECAST_API ||
-  import.meta.env.NEXT_PUBLIC_FORECAST_API ||
-  "https://api.open-meteo.com/v1/forecast";
-
-const DEFAULT_COUNTRY =
-  import.meta.env.VITE_DEFAULT_COUNTRY ||
-  import.meta.env.NEXT_PUBLIC_DEFAULT_COUNTRY ||
-  "DE";
-
-const DEFAULT_TIMEZONE =
-  import.meta.env.VITE_DEFAULT_TIMEZONE ||
-  import.meta.env.NEXT_PUBLIC_DEFAULT_TIMEZONE ||
-  "Europe/Berlin";
 
 // small helper that throws for non-2xx and non-JSON responses
 async function fetchJson<T>(input: RequestInfo | URL, init?: RequestInit): Promise<T> {
@@ -37,12 +17,12 @@ async function fetchJson<T>(input: RequestInfo | URL, init?: RequestInit): Promi
 export async function fetchGeoSuggestions(query: string): Promise<GeoResult[]> {
   if (!query || query.trim().length < 2) return [];
 
-  const url = new URL(GEOCODE_API);
+  const url = new URL(config.GEOCODE_API);
   url.searchParams.set("name", query.trim());
   url.searchParams.set("count", "8");
   url.searchParams.set("language", "de");
   url.searchParams.set("format", "json");
-  url.searchParams.set("country", DEFAULT_COUNTRY);
+  url.searchParams.set("country", config.DEFAULT_COUNTRY);
 
   try {
     const data = await fetchJson<any>(url.toString());
@@ -65,11 +45,11 @@ export async function fetchForecast(
   lat: number,
   lon: number,
   days: number = 7,
-  timezone: string = DEFAULT_TIMEZONE
+  timezone: string = config.DEFAULT_TIMEZONE
 ): Promise<DailyForecastResponse> {
   const clampedDays = Math.min(16, Math.max(1, Number(days) || 7));
 
-  const url = new URL(FORECAST_API);
+  const url = new URL(config.FORECAST_API);
   url.searchParams.set("latitude", String(lat));
   url.searchParams.set("longitude", String(lon));
   url.searchParams.set(
@@ -87,7 +67,7 @@ export async function fetchForecast(
 
   try {
     const data = await fetchJson<DailyForecastResponse>(url.toString());
-    return data; // <-- EXACT same shape your UI expects
+    return data; 
   } catch (e) {
     console.error("[fetchForecast]", e);
     // Return an empty but typed structure so the UI can handle gracefully
